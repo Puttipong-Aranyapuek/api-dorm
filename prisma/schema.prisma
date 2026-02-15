@@ -1,0 +1,49 @@
+model User {
+  id         Int      @id @default(autoincrement())
+  username   String   @unique
+  password   String
+  full_name  String?
+  phone      String?
+  role       String   @default("tenant")
+  created_at DateTime @default(now())
+
+  expenses   Expense[]
+  requests   Maintenance[]
+  notifications Notification[]
+}
+
+model Expense {
+  id        Int @id @default(autoincrement())
+  user_id   Int
+  month     String
+  electricity Float
+  water     Float
+  rent      Float
+  total     Float
+  status    String @default("unpaid")
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+}
+
+model Maintenance {
+  id          Int @id @default(autoincrement())
+  user_id     Int
+  title       String
+  description String
+  image_url   String?
+  status      String @default("pending")
+  created_at  DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+}
+
+model Notification {
+  id        Int @id @default(autoincrement())
+  user_id   Int
+  message   String
+  read      Boolean @default(false)
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+}
