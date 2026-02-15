@@ -1,48 +1,57 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "mysql"
+}
+
 model User {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @db.VarChar(20)
   username   String   @unique
   password   String
   full_name  String?
-  phone      String?
+  email      String?
   role       String   @default("tenant")
   created_at DateTime @default(now())
 
-  expenses   Expense[]
-  requests   Maintenance[]
+  expenses      Expense[]
+  requests      Maintenance[]
   notifications Notification[]
 }
 
 model Expense {
-  id        Int @id @default(autoincrement())
-  user_id   Int
-  month     String
+  id          Int      @id @default(autoincrement())
+  user_id     String   @db.VarChar(20)
+  month       String
   electricity Float
-  water     Float
-  rent      Float
-  total     Float
-  status    String @default("unpaid")
-  created_at DateTime @default(now())
+  water       Float
+  rent        Float
+  total       Float
+  status      String   @default("unpaid")
+  created_at  DateTime @default(now())
 
   user User @relation(fields: [user_id], references: [id])
 }
 
 model Maintenance {
-  id          Int @id @default(autoincrement())
-  user_id     Int
+  id          Int      @id @default(autoincrement())
+  user_id     String   @db.VarChar(20)
   title       String
   description String
   image_url   String?
-  status      String @default("pending")
+  status      String   @default("pending")
   created_at  DateTime @default(now())
 
   user User @relation(fields: [user_id], references: [id])
 }
 
 model Notification {
-  id        Int @id @default(autoincrement())
-  user_id   Int
-  message   String
-  read      Boolean @default(false)
+  id         Int      @id @default(autoincrement())
+  user_id    String   @db.VarChar(20)
+  message    String
+  read       Boolean  @default(false)
   created_at DateTime @default(now())
 
   user User @relation(fields: [user_id], references: [id])
