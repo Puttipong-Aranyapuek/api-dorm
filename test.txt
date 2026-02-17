@@ -1,1 +1,1 @@
-echo "test rebase"
+echo "test rebase from branch dev"
